@@ -1,0 +1,19 @@
+{
+    "name": "summer.zuo/simple-framework",
+    "description": "Summer's first framework",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "summer",
+            "email": "summer_zuo@yeah.net"
+        }
+    ],
+    "autoload":{
+        "psr-4":{
+            "sf\\": "vendor/src/",
+            "app\\": "app/"
+        }
+    },
+    "require": {}
+}
