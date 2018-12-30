@@ -12,9 +12,13 @@ class Request
      * @param $key
      * @param null $defaultValue
      */
-    public function get($key, $defaultValue = null)
+    public function get($key = null, $defaultValue = null)
     {
-        $value = isset($_GET[$key]) ? $_GET[$key] : $defaultValue;
+        if (empty($key)) {
+            $value = $_GET;
+        } else {
+            $value = isset($_GET[$key]) ? $_GET[$key] : $defaultValue;
+        }
         return $value;
     }
 
@@ -23,9 +27,25 @@ class Request
      * @param $key
      * @param null $defaultValue
      */
-    public function post($key, $defaultValue = null)
+    public function post($key = null, $defaultValue = null)
     {
-        $value = $_POST[$Key];
-        return $value ?: $defaultValue;
+        if (empty($key) && $defaultValue !== null) {
+            $value = $_POST;
+        } else {
+            $value = isset($_POST[$key]) ? $_POST[$key] : $defaultValue;
+        }
+        return $value;
+    }
+
+    /**
+     * 获取所有参数
+     */
+    public function getAllRequestParams()
+    {
+        $getParams = $this->get();
+        $postParams = $this->post();
+
+        $paramsArr = array_merge($getParams, $postParams);
+        return $paramsArr;
     }
 }

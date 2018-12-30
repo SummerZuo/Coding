@@ -59,11 +59,17 @@ class Application extends Component
         $action = $request->get('a', $this->defaultAction);
 
         $class = Sf::$container->get($this->defaultRoute . '\\' . $controller . 'Controller');
-        // @todo 根据参数
-        $actionParams = $this->getActionParams($class, $action);
 
-        //  存在问题：如果action中需要传入默认参数，怎么传入
-        call_user_func([$class,$action], $actionParams);
+        $actionParamsName = $this->getActionParams($class, $action);
+
+        $actionParams = [];
+        foreach ($actionParamsName as $paramName) {
+            if (isset($paramName->name)) {
+                $res[$paramName->name] = $request->get($paramName->name);
+            }
+        }
+
+        call_user_func_array([$class,$action], $actionParams);
     }
 
     public function getRequest()
@@ -76,8 +82,18 @@ class Application extends Component
         return Sf::$container->get($class);
     }
 
+    /**
+     * 获取一个方法的参数名称
+     * @param $class
+     * @param $method
+     * @return \ReflectionParameter[]
+     */
     public function getActionParams($class, $method)
     {
         // ReflectionMethod
+        $action = new \ReflectionMethod($class, $method);
+        $actionParams = $action->getParameters();
+
+        return $actionParams;
     }
 }
