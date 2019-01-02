@@ -1,11 +1,13 @@
 <?php
 /**
  * 请求类
+ *
+ * 请求类加上事件
  */
 
 namespace sf\web;
 
-class Request
+class Request extends \sf\base\Request
 {
     /**
      * 获取get请求参数

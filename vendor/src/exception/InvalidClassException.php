@@ -8,9 +8,6 @@
 
 namespace sf\exception;
 
-
-use Throwable;
-
 class InvalidClassException extends \Exception
 {
     

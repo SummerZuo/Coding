@@ -10,6 +10,6 @@ class TestController extends \sf\web\Controller
 {
     public function index($cc, $tt)
     {
-var_dump($cc, $tt);die;
+        return 123;
     }
 }

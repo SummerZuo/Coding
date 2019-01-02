@@ -11,6 +11,9 @@ use sf\base\Component;
 
 class Application extends Component
 {
+
+    const BEFORE_REQUEST = 'before_request';
+
     private $defaultRoute = 'app\controller';
     /*
      * 默认控制器
@@ -65,11 +68,13 @@ class Application extends Component
         $actionParams = [];
         foreach ($actionParamsName as $paramName) {
             if (isset($paramName->name)) {
-                $res[$paramName->name] = $request->get($paramName->name);
+                $actionParams[$paramName->name] = $request->get($paramName->name);
             }
         }
 
-        call_user_func_array([$class,$action], $actionParams);
+        $res = call_user_func_array([$class,$action], $actionParams);
+
+
     }
 
     public function getRequest()
@@ -80,6 +85,11 @@ class Application extends Component
     public function get($class)
     {
         return Sf::$container->get($class);
+    }
+
+    public function getResponse()
+    {
+        return $this->get('sf\web\Response');
     }
 
     /**
