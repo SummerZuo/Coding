@@ -11,9 +11,6 @@ use sf\base\Component;
 
 class Application extends Component
 {
-
-    const BEFORE_REQUEST = 'before_request';
-
     private $defaultRoute = 'app\controller';
     /*
      * 默认控制器

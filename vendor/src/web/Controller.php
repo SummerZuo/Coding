@@ -9,7 +9,9 @@
 namespace sf\web;
 
 
-class Controller
+use sf\base\Component;
+
+class Controller extends Component
 {
 
 }
