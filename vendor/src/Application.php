@@ -36,7 +36,7 @@ class Application extends Component
 
         foreach ($config as $key=>$item) {
             if (isset($item['class'])) {
-                Sf::$container->register($item['class'], $item);
+                \Sf::$container->register($key, $item);
             } else {
                 $this->$key = $item;
             }

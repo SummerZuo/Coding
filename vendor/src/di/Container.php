@@ -11,7 +11,7 @@ use sf\exception\InvalidClassException;
 
 class Container extends Object
 {
-    private $single = [];
+    private $_definitions = [];
 
     private $config = [];
 
@@ -23,8 +23,13 @@ class Container extends Object
      */
     public function register($class, $config = [])
     {
-        if ($this->single[$class] == null) {
-            $this->single[$class] = $class;
+        if (empty($this->_definitions[$class])) {
+            if (isset($config['class'])) {
+                $this->_definitions[$class] = $config['class'];
+                unset($config['class']);
+            } else {
+                $this->_definitions[$class] = $class;
+            }
         }
 
         if (!empty($config) || $this->config[$class] != $config) {
@@ -39,7 +44,7 @@ class Container extends Object
     public function get($class)
     {
         if (!isset($this->instance[$class])) {
-            $this->make($class);
+            $this->make($class, empty($this->config[$class]) ? [] : $this->config[$class]);
         }
         return $this->instance[$class];
     }
@@ -49,8 +54,12 @@ class Container extends Object
      * 实例化类
      * 作用：通过名称，即可获取类实例；是真正实例化类的地方
      */
-    public function make($class, $config=[], $single = true)
+    public function make($class, $config=[], $_definitions = true)
     {
+        if (isset($this->_definitions[$class])) {
+            $class = $this->_definitions[$class];
+        }
+
         if (!class_exists($class)) {
             throw new InvalidClassException("${class}:不存在");
         }
@@ -69,7 +78,7 @@ class Container extends Object
             $instance = $reflection->newInstanceArgs($params);
         }
 
-        if ($single) {
+        if ($_definitions) {
             $this->instance[$class] = $instance;
         }
 
