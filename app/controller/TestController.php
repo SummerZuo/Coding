@@ -7,14 +7,19 @@
  */
 namespace app\controller;
 use app\Model\LoginForm;
+use app\Model\TableA;
 
 class TestController extends \sf\web\Controller
 {
 
     public function index()
     {
-        $model = new LoginForm();
-        var_dump($model);
+        $model = new TableA();
+        $model->name = 'test';
+//        if ($model->load()) {
+            $model->save();
+//        }
+
     }
 
 

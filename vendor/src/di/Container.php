@@ -43,9 +43,14 @@ class Container extends Object
      */
     public function get($class)
     {
+        if (isset($this->_definitions[$class])) {
+            $class = $this->_definitions[$class];
+        }
+
         if (!isset($this->instance[$class])) {
             $this->make($class, empty($this->config[$class]) ? [] : $this->config[$class]);
         }
+
         return $this->instance[$class];
     }
 
@@ -56,9 +61,6 @@ class Container extends Object
      */
     public function make($class, $config=[], $_definitions = true)
     {
-        if (isset($this->_definitions[$class])) {
-            $class = $this->_definitions[$class];
-        }
 
         if (!class_exists($class)) {
             throw new InvalidClassException("${class}:不存在");
