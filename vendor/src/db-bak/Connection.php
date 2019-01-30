@@ -20,6 +20,8 @@ class Connection extends Object
 
     private $_charSet = 'UTF-8';
 
+    public $command;
+
     public function __construct($config = [])
     {
         if (!empty($config)) {
@@ -28,7 +30,7 @@ class Connection extends Object
             }
 
             $this->_pdo = new \PDO($this->_dsn, $this->_username, $this->_passwd, $this->_options);
-
+            
             $this->setDbCharset();
         }
     }
@@ -59,7 +61,7 @@ class Connection extends Object
      */
     public function setDsn($dsn)
     {
-        $this->_dsn = $dsn;
+        $this->_dsn = trim($dsn);
     }
 
     /**
@@ -89,8 +91,51 @@ class Connection extends Object
     /**
      * @param \PDO|null $pdo
      */
-    public function getPdo($pdo)
+    public function setPdo($pdo)
     {
         $this->_pdo = $pdo;
+    }
+
+    public function getPdo()
+    {
+        return $this->_pdo;
+    }
+
+    private $_commandMaps = [
+        'mysql' => 'sf\db\mysql\Command'
+    ];
+
+    public function getCommand()
+    {
+        $driver = $this->getDriverName();
+
+        if (isset($this->_commandMaps[$driver])) {
+            $commandClass = $this->_commandMaps[$driver];
+        } else {
+            $commandClass = 'sf\db\mysql\Command';
+        }
+        $config['db'] = $this;
+        $command = \Sf::$container->get($commandClass, $config);
+        return $command;
+    }
+
+    
+    public function getDriverName()
+    {
+
+    }
+
+    public function getQueryBuilder()
+    {
+        if ($this->queryBuilder === null) {
+            foreach ($this->_commandMaps as $driver=>$command) {
+                if (strpos($this->_dsn, $driver) === 0) {
+                    $this->command = $command;
+                    break;
+                }
+            }
+        }
+
+        return $this->command;
     }
 }

@@ -19,4 +19,10 @@ class TableA extends \sf\db\Model
     {
         return 'table_a';
     }
+
+    public function attributes()
+    {
+        return get_object_vars($this);
+    }
+
 }

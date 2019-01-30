@@ -12,9 +12,10 @@ interface ModelInterface
 
     public static function tableName();
 
+//    public static function query();
 //    public static function primaryKey();
 
-    public static function findOne($condition);
+//    public static function findOne($condition);
 //
 //    public static function findAll($condition);
 //

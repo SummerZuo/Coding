@@ -48,7 +48,7 @@ class Container extends Object
         }
 
         if (!isset($this->instance[$class])) {
-            $this->make($class, empty($this->config[$class]) ? [] : $this->config[$class]);
+            return $this->make($class, empty($this->config[$class]) ? [] : $this->config[$class]);
         }
 
         return $this->instance[$class];
@@ -59,7 +59,7 @@ class Container extends Object
      * 实例化类
      * 作用：通过名称，即可获取类实例；是真正实例化类的地方
      */
-    public function make($class, $config=[], $_definitions = true)
+    public function make($class, $config=[], $single = true)
     {
 
         if (!class_exists($class)) {
@@ -80,7 +80,7 @@ class Container extends Object
             $instance = $reflection->newInstanceArgs($params);
         }
 
-        if ($_definitions) {
+        if ($single) {
             $this->instance[$class] = $instance;
         }
 

@@ -8,18 +8,17 @@
 namespace app\controller;
 use app\Model\LoginForm;
 use app\Model\TableA;
+use sf\cache\FileCache;
 
 class TestController extends \sf\web\Controller
 {
 
     public function index()
     {
-        $model = new TableA();
-        $model->name = 'test';
-//        if ($model->load()) {
-            $model->save();
-//        }
+        $cache = new FileCache();
+        $t = $cache->set('abc','123');
 
+        var_dump($cache->get('abc'));die;
     }
 
 

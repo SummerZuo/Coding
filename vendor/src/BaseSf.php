@@ -26,8 +26,8 @@ class BaseSf extends Object
         }
     }
 
-    public static function createObject($class)
+    public static function createObject($class, $config = [])
     {
-        return self::$container->get($class);
+        return self::$container->make($class, $config);
     }
 }
